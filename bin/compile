@@ -22,7 +22,8 @@ if [ ! -f ${CACHE_DIR}/${SONAR_DIST}.zip ]; then
 fi
 
 echo -n "-----> Installing ${SONAR_DIST}...."
-unzip -q ${CACHE_DIR}/${SONAR_DIST}.zip -d ${BUILD_DIR}
+cd ${BUILD_DIR}
+jar xf ${CACHE_DIR}/${SONAR_DIST}.zip
 echo " done"
 
 if [ "${PIPESTATUS[*]}" != "0" ]; then
