@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# bin/use <build-dir>
+
+# TODO: find a better way to detect Sonar apps
+echo "Sonar" && exit 0

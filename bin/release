@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# bin/release <build-dir>
+
+BUILD_DIR=$1
+
+cat <<EOF
+---
+
+config_vars:
+  JAVA_OPTS: -Xmx384m -Xss512k -XX:+UseCompressedOops
+
+default_process_types:
+  web: bin/linux-x86-64/sonar.sh console
+EOF

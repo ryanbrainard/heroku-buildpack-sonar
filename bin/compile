@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# fail fast
+set -e
+
+# parse args
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+SONAR_DIST="sonar-2.11"
+
+if [ ! -d ${CACHE_DIR} ] ; then
+  mkdir ${CACHE_DIR}
+fi
+
+if [ ! -f ${CACHE_DIR}/${SONAR_DIST}.zip ]; then
+  SONAR_URL="http://dist.sonar.codehaus.org/${SONAR_DIST}.zip"
+  echo -n "-----> Downloading ${SONAR_DIST}....."
+  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST}.zip
+  echo " done"
+fi
+
+echo -n "-----> Installing ${SONAR_DIST}...."
+unzip -q ${CACHE_DIR}/${SONAR_DIST}.zip -d ${BUILD_DIR}
+echo " done"
+
+if [ "${PIPESTATUS[*]}" != "0" ]; then
+  echo " !     Failed to install Sonar"
+  exit 1
+fi
