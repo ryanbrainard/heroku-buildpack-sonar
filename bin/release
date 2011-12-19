@@ -3,6 +3,14 @@
 
 BUILD_DIR=$1
 
+cat > ${BUILD_DIR}/boot.sh <<EOF
+#!/bin/sh
+sed -i -r "s/#(sonar\.web\.port:\s+)9000/\1 ${PORT}/g" sonar/conf/sonar.properties
+exec sonar/bin/linux-x86-64/sonar.sh console
+EOF
+
+chmod +x ${BUILD_DIR}/boot.sh
+
 cat <<EOF
 ---
 
@@ -10,5 +18,5 @@ config_vars:
   JAVA_OPTS: -Xmx384m -Xss512k -XX:+UseCompressedOops
 
 default_process_types:
-  web: sonar/bin/linux-x86-64/sonar.sh console
+  web: boot.sh
 EOF

@@ -27,8 +27,8 @@ echo -n "-----> Installing ${SONAR_DIST}...."
 cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
 mv ${SONAR_DIST} sonar
-sed -i -r "s/#(sonar\.web\.port:\s+)9000/\1 \${env:PORT}/g" sonar/conf/sonar.properties
-
+#sed -i -r "s/#(sonar\.web\.port:\s+)9000/\1 \${env:PORT}/g" sonar/conf/sonar.properties
+sed -i -r "s/wrapper\.console\.loglevel=NONE/wrapper.console.loglevel=INFO/" sonar/conf/wrapper.conf
 echo " done"
 
 if [ "${PIPESTATUS[*]}" != "0" ]; then
