@@ -9,6 +9,9 @@ cat <<EOF
 config_vars:
   JAVA_OPTS: -Xmx384m -Xss512k -XX:+UseCompressedOops
 
+addons:
+  shared-database:5mb
+
 default_process_types:
-  web: java -jar jetty/runner.jar --port $PORT sonar/war/sonar.war
+  web: java -jar jetty/runner.jar --port \$PORT sonar/war/sonar.war
 EOF

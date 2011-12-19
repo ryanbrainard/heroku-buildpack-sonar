@@ -10,12 +10,14 @@ testRelease()
 config_vars:
   JAVA_OPTS: -Xmx384m -Xss512k -XX:+UseCompressedOops
 
+addons:
+  shared-database:5mb
+
 default_process_types:
-  web: boot.sh
+  web: java -jar jetty/runner.jar --port \\$PORT sonar/war/sonar.war
 EOF`
 
   capture ${BUILDPACK_HOME}/bin/release ${BUILD_DIR}
-  assertTrue "[ -x boot.sh ]"
   assertEquals 0 ${rtrn}
   assertEquals "${expected_release_output}" "`cat ${STD_OUT}`"
   assertEquals "" "`cat ${STD_ERR}`"

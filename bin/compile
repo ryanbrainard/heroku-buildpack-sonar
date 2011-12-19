@@ -8,43 +8,45 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-SONAR_DIST="sonar-2.11"
-SONAR_DIST_TARBALL="${SONAR_DIST}.tar.gz"
+SONAR_VERSION="2.11"
+SONAR_DIST="sonar-${SONAR_VERSION}"
+SONAR_DIST_TAR="${SONAR_DIST}.tar.gz"
 
-JETTY_RUNNER_DIST="8.1.0.RC1"
-JETTY_RUNNER_JAR=jetty-runner-${JETTY_RUNNER_DIST}.jar
+JETTY_RUNNER_VERSION="8.1.0.RC1"
+JETTY_RUNNER_DIST="jetty-runner-${JETTY_RUNNER_VERSION}"
+JETTY_RUNNER_JAR="${JETTY_RUNNER_DIST}.jar"
 
-if [ ! -d ${CACHE_DIR} ] ; then
-  mkdir ${CACHE_DIR}
+if [ ! -d ${CACHE_DIR} ]; then
+  mkdir -p ${CACHE_DIR}
 fi
 
-if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TARBALL} ]; then  
-  SONAR_URL="https://s3.amazonaws.com/heroku-buildpack-sonar/${SONAR_DIST_TARBALL}"
+if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TAR} ]; then  
+  SONAR_URL="https://s3.amazonaws.com/heroku-buildpack-sonar/${SONAR_DIST_TAR}"
   echo -n "-----> Downloading ${SONAR_DIST}....."
-  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST_TARBALL}
+  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST_TAR}
   echo " done"
 fi
 
 echo -n "-----> Installing ${SONAR_DIST}...."
 cd ${BUILD_DIR}
-tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
+tar -zxf ${CACHE_DIR}/${SONAR_DIST_TAR}
 mv ${SONAR_DIST} sonar
 mkdir -p ${BUILD_DIR}/sonar/home
 cd sonar/war
-./apache-ant-1.7.0/bin/ant -DsonarHome=/app/sonar/home
+sed -i -r "s/ant$/ant -DsonarHome=\/app\/sonar\/home/" build-war.sh
+./build-war.sh
 echo " done"
 
 if [ ! -f ${CACHE_DIR}/${JETTY_RUNNER_JAR} ]; then  
   JETTY_RUNNER_URL="http://repo1.maven.org/maven2/org/mortbay/jetty/jetty-runner/${JETTY_RUNNER_DIST}/${JETTY_RUNNER_JAR}"
-  echo -n "-----> Downloading Jetty Runner ${JETTY_RUNNER_DIST}....."
+  echo -n "-----> Downloading ${JETTY_RUNNER_DIST}....."
   curl --silent --location ${JETTY_RUNNER_URL} > ${CACHE_DIR}/${JETTY_RUNNER_JAR}
   echo " done"
 fi
 
-echo -n "-----> Installing Jetty Runner ${JETTY_RUNNER_DIST}...."
+echo -n "-----> Installing ${JETTY_RUNNER_DIST}...."
 mkdir -p ${BUILD_DIR}/jetty
-cd ${BUILD_DIR}/jetty
-cp ${CACHE_DIR}/${JETTY_RUNNER_JAR} runner.jar
+cp ${CACHE_DIR}/${JETTY_RUNNER_JAR} ${BUILD_DIR}/jetty/runner.jar
 echo " done"
 
 if [ "${PIPESTATUS[*]}" != "0" ]; then
