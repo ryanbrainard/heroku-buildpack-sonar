@@ -23,12 +23,22 @@ if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TARBALL} ]; then
   echo " done"
 fi
 
+
 echo -n "-----> Installing ${SONAR_DIST}...."
+
 cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
 mv ${SONAR_DIST} sonar
-#sed -i -r "s/#(sonar\.web\.port:\s+)9000/\1 \${env:PORT}/g" sonar/conf/sonar.properties
+
 sed -i -r "s/wrapper\.console\.loglevel=NONE/wrapper.console.loglevel=INFO/" sonar/conf/wrapper.conf
+
+cat > ${BUILD_DIR}/boot.sh <<EOF
+#!/bin/sh
+sed -i -r "s/#(sonar\.web\.port:\s+)9000/\1 \$PORT/g" sonar/conf/sonar.properties
+exec sonar/bin/linux-x86-64/sonar.sh console
+EOF
+chmod +x ${BUILD_DIR}/boot.sh
+
 echo " done"
 
 if [ "${PIPESTATUS[*]}" != "0" ]; then
