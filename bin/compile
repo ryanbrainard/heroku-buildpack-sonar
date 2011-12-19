@@ -11,34 +11,38 @@ CACHE_DIR=$2
 SONAR_DIST="sonar-2.11"
 SONAR_DIST_TARBALL="${SONAR_DIST}.tar.gz"
 
+JETTY_RUNNER_DIST=8.1.0.RC1
+JETTY_RUNNER_JAR=${JETTY_RUNNER_DIST}.jar
+
 if [ ! -d ${CACHE_DIR} ] ; then
   mkdir ${CACHE_DIR}
 fi
 
-if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TARBALL} ]; then
-  
+if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TARBALL} ]; then  
   SONAR_URL="https://s3.amazonaws.com/heroku-buildpack-sonar/${SONAR_DIST_TARBALL}"
   echo -n "-----> Downloading ${SONAR_DIST}....."
   curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST_TARBALL}
   echo " done"
 fi
 
-
 echo -n "-----> Installing ${SONAR_DIST}...."
-
 cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
 mv ${SONAR_DIST} sonar
+sonar/war/build-war.sh 
+echo " done"
 
-sed -i -r "s/wrapper\.console\.loglevel=NONE/wrapper.console.loglevel=INFO/" sonar/conf/wrapper.conf
+if [ ! -f ${CACHE_DIR}/${JETTY_RUNNER_JAR} ]; then  
+  JETTY_RUNNER_URL="http://repo1.maven.org/maven2/org/mortbay/jetty/jetty-runner/${JETTY_RUNNER_DIST}/${JETTY_RUNNER_JAR}"
+  echo -n "-----> Downloading Jetty Runner ${JETTY_RUNNER_DIST}....."
+  curl --silent --location ${JETTY_RUNNER_URL} > ${CACHE_DIR}/${JETTY_RUNNER_JAR}
+  echo " done"
+fi
 
-cat > ${BUILD_DIR}/boot.sh <<EOF
-#!/bin/sh
-sed -i -r "s/#(sonar\.web\.port:\s+)9000/\1 \$PORT/g" sonar/conf/sonar.properties
-exec sonar/bin/linux-x86-64/sonar.sh console
-EOF
-chmod +x ${BUILD_DIR}/boot.sh
-
+echo -n "-----> Installing Jetty Runner ${JETTY_RUNNER_DIST}...."
+mkdir -p ${BUILD_DIR}/jetty
+cd ${BUILD_DIR}/jetty
+cp ${CACHE_DIR}/${JETTY_RUNNER_JAR} runner.jar
 echo " done"
 
 if [ "${PIPESTATUS[*]}" != "0" ]; then
