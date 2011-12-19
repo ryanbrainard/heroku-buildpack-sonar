@@ -30,9 +30,8 @@ cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
 mv ${SONAR_DIST} sonar
 mkdir -p ${BUILD_DIR}/sonar/home
-echo "sonar.home=/app/sonar/home" >> sonar/conf/sonar.properties
 cd sonar/war
-./build-war.sh
+./apache-ant-1.7.0/bin/ant -DsonarHome=/app/sonar/home
 echo " done"
 
 if [ ! -f ${CACHE_DIR}/${JETTY_RUNNER_JAR} ]; then  
