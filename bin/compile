@@ -29,7 +29,8 @@ echo -n "-----> Installing ${SONAR_DIST}...."
 cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
 mv ${SONAR_DIST} sonar
-sonar/war/build-war.sh 
+cd sonar/war
+./build-war.sh
 echo " done"
 
 if [ ! -f ${CACHE_DIR}/${JETTY_RUNNER_JAR} ]; then  
