@@ -9,21 +9,24 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 
 SONAR_DIST="sonar-2.11"
+SONAR_DIST_TARBALL="${SONAR_DIST}.tar.gz"
 
 if [ ! -d ${CACHE_DIR} ] ; then
   mkdir ${CACHE_DIR}
 fi
 
-if [ ! -f ${CACHE_DIR}/${SONAR_DIST}.zip ]; then
-  SONAR_URL="http://dist.sonar.codehaus.org/${SONAR_DIST}.zip"
+if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TARBALL} ]; then
+  
+  SONAR_URL="https://s3.amazonaws.com/heroku-buildpack-sonar/${SONAR_DIST_TARBALL}"
   echo -n "-----> Downloading ${SONAR_DIST}....."
-  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST}.zip
+  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST_TARBALL}
   echo " done"
 fi
 
 echo -n "-----> Installing ${SONAR_DIST}...."
 cd ${BUILD_DIR}
-jar xf ${CACHE_DIR}/${SONAR_DIST}.zip
+tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
+mv ${SONAR_DIST} sonar
 echo " done"
 
 if [ "${PIPESTATUS[*]}" != "0" ]; then

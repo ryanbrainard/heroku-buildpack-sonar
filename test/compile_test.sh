@@ -6,9 +6,9 @@ testCompile()
 {
   capture ${BUILDPACK_HOME}/bin/compile ${BUILD_DIR} ${CACHE_DIR}
   assertContains "-----> Downloading"  "`cat ${STD_OUT}`"
-  assertTrue "Should have cached Sonar" "[ -f ${CACHE_DIR}/sonar-2.11.zip ]"
+  assertTrue "Should have cached Sonar" "[ -f ${CACHE_DIR}/sonar-2.11.tar.gz ]"
   assertContains "-----> Installing"  "`cat ${STD_OUT}`"
-  assertTrue "Should have installed Sonar in build dir: `ls ${BUILD_DIR}`" "[ -d ${BUILD_DIR}/sonar-2.11 ]"
+  assertTrue "Should have installed Sonar in build dir: `ls ${BUILD_DIR}`" "[ -d ${BUILD_DIR}/sonar ]"
   assertEquals 0 ${rtrn}
   assertEquals "" "`cat ${STD_ERR}`"
 
