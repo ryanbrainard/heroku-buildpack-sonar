@@ -10,5 +10,5 @@ config_vars:
   JAVA_OPTS: -Xmx384m -Xss512k -XX:+UseCompressedOops
 
 default_process_types:
-  web: boot.sh
+  web: sh boot.sh
 EOF
