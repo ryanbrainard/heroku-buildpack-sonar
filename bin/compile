@@ -29,6 +29,8 @@ echo -n "-----> Installing ${SONAR_DIST}...."
 cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TARBALL}
 mv ${SONAR_DIST} sonar
+mkdir -p ${BUILD_DIR}/sonar/home
+echo "sonar.home=${BUILD_DIR}/sonar/home" >> sonar/conf/sonar.properties
 cd sonar/war
 ./build-war.sh
 echo " done"
