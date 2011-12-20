@@ -14,7 +14,7 @@ addons:
   shared-database:5mb
 
 default_process_types:
-  web: java -jar jetty/runner.jar --port \\$PORT sonar/war/sonar.war
+  web: sh sonar/war/boot.sh
 EOF`
 
   capture ${BUILDPACK_HOME}/bin/release ${BUILD_DIR}
