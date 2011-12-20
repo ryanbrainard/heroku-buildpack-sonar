@@ -5,8 +5,13 @@
 testCompile()
 {
   capture ${BUILDPACK_HOME}/bin/compile ${BUILD_DIR} ${CACHE_DIR}
+  assertEquals 0 ${rtrn}
+  assertEquals "" "`cat ${STD_ERR}`"
+
   assertContains "-----> Downloading sonar"  "`cat ${STD_OUT}`"
   assertTrue "Should have cached Sonar `ls -la ${CACHE_DIR}`" "[ -f ${CACHE_DIR}/sonar-2.11.tar.gz ]"
+  assertEquals "1431cb5437e58ed890642eda7ee4f412" "`md5 -q ${CACHE_DIR}/sonar-2.11.tar.gz`"
+
   assertContains "-----> Installing sonar"  "`cat ${STD_OUT}`"
   assertTrue "Should have installed Sonar in build dir: `ls -la ${BUILD_DIR}`" "[ -d ${BUILD_DIR}/sonar ]"
   assertTrue "Should have created Sonar home directory: `ls -la ${BUILD_DIR}/sonar`" "[ -d ${BUILD_DIR}/sonar/home ]"
@@ -16,12 +21,11 @@ testCompile()
 
   assertContains "-----> Downloading jetty-runner"  "`cat ${STD_OUT}`"
   assertTrue "Should have cached Jetty Runner `ls -la ${CACHE_DIR}`" "[ -f ${CACHE_DIR}/jetty-runner-8.1.0.RC1.jar ]"
+  assertEquals "97ddeabd843ed62928284a937d63fa93" "`md5 -q ${CACHE_DIR}/jetty-runner-8.1.0.RC1.jar`"
+  
   assertContains "-----> Installing jetty-runner"  "`cat ${STD_OUT}`"
   assertTrue "Should have installed Jetty Runner in build dir: `ls -la ${BUILD_DIR}`" "[ -f ${BUILD_DIR}/jetty/runner.jar ]"
   
-  assertEquals 0 ${rtrn}
-  assertEquals "" "`cat ${STD_ERR}`"
-
   # Run again to ensure cache is used.
   rm -rf ${BUILD_DIR}/*
   resetCapture

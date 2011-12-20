@@ -26,7 +26,7 @@ fi
 
 # Download Jetty Runner is not in cache
 if [ ! -f ${CACHE_DIR}/${JETTY_RUNNER_JAR} ]; then  
-  JETTY_RUNNER_URL="http://repo1.maven.org/maven2/org/mortbay/jetty/jetty-runner/${JETTY_RUNNER_DIST}/${JETTY_RUNNER_JAR}"
+  JETTY_RUNNER_URL="http://repo1.maven.org/maven2/org/mortbay/jetty/jetty-runner/${JETTY_RUNNER_VERSION}/${JETTY_RUNNER_JAR}"
   echo -n "-----> Downloading ${JETTY_RUNNER_DIST}....."
   curl --silent --location ${JETTY_RUNNER_URL} > ${CACHE_DIR}/${JETTY_RUNNER_JAR}
   echo " done"
@@ -57,7 +57,6 @@ mv ${SONAR_DIST} ${SONAR_ROOT}
 cp ${BP_DIR}/etc/sonar.properties ${SONAR_ROOT}/conf
 
 # Build the WAR
-echo "**** mkdir -p ${SONAR_HOME} ***"
 mkdir -p ${SONAR_HOME}
 cd ${SONAR_ROOT}/war
 sed -i -r "s/ant$/ant -DsonarHome=\/app\/sonar\/home/" build-war.sh
