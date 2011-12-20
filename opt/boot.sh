@@ -24,10 +24,8 @@ export DATABASE_URL_PASSWORD=`parse_uri ${DATABASE_URL} password`
 export DATABASE_URL_HOST=`parse_uri ${DATABASE_URL} host`
 export DATABASE_URL_PATH=`parse_uri ${DATABASE_URL} path`
 
-echo "Args @: $@"
-echo "Arg 1: $1"
-echo "PORT: $PORT"
-
-nc -w 5 -l -p $PORT
+echo "Binding to $PORT"
+nc -w 10 -l -p $PORT
+echo "Released bind to $PORT"
 
 exec java -jar jetty/runner.jar --port $PORT sonar/war/sonar.war

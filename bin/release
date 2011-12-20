@@ -15,6 +15,6 @@ EOF
 if [ ! -f $BUILD_DIR/Procfile ]; then
   cat <<EOF
   default_process_types:
-    web: sh sonar/war/boot.sh $PORT
+    web: sh sonar/war/boot.sh
 EOF
 fi
