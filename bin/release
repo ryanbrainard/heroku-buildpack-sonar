@@ -8,11 +8,8 @@ cat <<EOF
 
 config_vars:
   JAVA_OPTS: -Xmx384m -Xss512k -XX:+UseCompressedOops
-
 addons:
-  logging:basic
   shared-database:5mb
-
 default_process_types:
   web: sh sonar/war/boot.sh
 EOF
