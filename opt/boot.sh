@@ -24,4 +24,6 @@ export DATABASE_URL_PASSWORD=`parse_uri ${DATABASE_URL} password`
 export DATABASE_URL_HOST=`parse_uri ${DATABASE_URL} host`
 export DATABASE_URL_PATH=`parse_uri ${DATABASE_URL} path`
 
+nc -w 5 -l $PORT
+
 exec java -jar jetty/runner.jar --port $PORT sonar/war/sonar.war
