@@ -4,7 +4,7 @@ parse_uri(){
   uri=$1
   part=$2
  
-  uri_regex="(\w+):\/\/(\w+):(\w+)@(\w+)\/(\w+)"
+  uri_regex="(\w+):\/\/(\w+):(\w+)@([^\/]+)\/(\w+)"
 
   case $part in
     scheme)   part_num=1;;
