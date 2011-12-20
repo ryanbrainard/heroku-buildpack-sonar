@@ -13,8 +13,7 @@ BP_DIR=`cd $(dirname $0); cd ..; pwd`
 SONAR_VERSION="2.11"
 SONAR_DIST="sonar-${SONAR_VERSION}"
 SONAR_DIST_TAR="${SONAR_DIST}.tar.gz"
-SONAR_ROOT=${BUILD_DIR}/sonar
-SONAR_HOME=${SONAR_ROOT}/home
+SONAR_HOME=${BUILD_DIR}/sonar
 
 JETTY_RUNNER_VERSION="8.1.0.RC1"
 JETTY_RUNNER_DIST="jetty-runner-${JETTY_RUNNER_VERSION}"
@@ -51,20 +50,19 @@ echo -n "-----> Installing ${SONAR_DIST}...."
 # Untar Sonar
 cd ${BUILD_DIR}
 tar -zxf ${CACHE_DIR}/${SONAR_DIST_TAR}
-mv ${SONAR_DIST} ${SONAR_ROOT}
+mv ${SONAR_DIST} ${SONAR_HOME}
 
 # Copy vendored properties into Sonar
-cp ${BP_DIR}/etc/sonar.properties ${SONAR_ROOT}/conf
+cp ${BP_DIR}/etc/sonar.properties ${SONAR_HOME}/conf
 
 # Build the WAR
-mkdir -p ${SONAR_HOME}
-cd ${SONAR_ROOT}/war
-sed -i -r "s/ant$/ant -DsonarHome=\/app\/sonar\/home/" build-war.sh
+cd ${SONAR_HOME}/war
+sed -i -r "s/ant$/ant -DsonarHome=\/app\/sonar/" build-war.sh
 ./build-war.sh
 
 # Copy the vendored boot script for launching the WAR
-cp ${BP_DIR}/opt/boot.sh ${SONAR_ROOT}/war
-chmod +x ${SONAR_ROOT}/war/boot.sh
+cp ${BP_DIR}/opt/boot.sh ${SONAR_HOME}/war
+chmod +x ${SONAR_HOME}/war/boot.sh
 
 echo " done"
 
