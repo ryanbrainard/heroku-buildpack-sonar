@@ -60,6 +60,9 @@ cd ${SONAR_HOME}/war
 sed -i -r "s/ant$/ant -DsonarHome=\/app\/sonar/" build-war.sh
 ./build-war.sh
 
+# Clean up hidden plug-in files (Sonar bug?)
+rm ${SONAR_HOME}/lib/core-plugins/._sonar-*
+
 # Copy the vendored boot script for launching the WAR
 cp ${BP_DIR}/opt/boot.sh ${SONAR_HOME}/war
 chmod +x ${SONAR_HOME}/war/boot.sh
