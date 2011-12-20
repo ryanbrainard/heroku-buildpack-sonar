@@ -28,6 +28,6 @@ echo "Args @: $@"
 echo "Arg 1: $1"
 echo "PORT: $PORT"
 
-nc -w 5 -l $PORT
+nc -w 5 -l -p $PORT
 
 exec java -jar jetty/runner.jar --port $PORT sonar/war/sonar.war
