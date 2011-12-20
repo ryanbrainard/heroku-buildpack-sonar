@@ -10,7 +10,7 @@ testCompile()
 
   assertContains "-----> Downloading sonar"  "`cat ${STD_OUT}`"
   assertTrue "Should have cached Sonar `ls -la ${CACHE_DIR}`" "[ -f ${CACHE_DIR}/sonar-2.11.tar.gz ]"
-  assertEquals "1431cb5437e58ed890642eda7ee4f412" "`md5 -q ${CACHE_DIR}/sonar-2.11.tar.gz`"
+  assertEquals "cd4c36833faa82f234155c539338aff2" "`md5 -q ${CACHE_DIR}/sonar-2.11.tar.gz`"
 
   assertContains "-----> Installing sonar"  "`cat ${STD_OUT}`"
   assertTrue "Should have installed Sonar in build dir: `ls -la ${BUILD_DIR}`" "[ -d ${BUILD_DIR}/sonar ]"
