@@ -12,7 +12,7 @@ BP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 SONAR_VERSION="2.11"
 SONAR_DIST="sonar-${SONAR_VERSION}"
-SONAR_DIST_ZIP="${SONAR_DIST}.zip"
+SONAR_DIST_TAR="${SONAR_DIST}.tar.gz"
 SONAR_HOME=${BUILD_DIR}/sonar
 
 JETTY_RUNNER_VERSION="8.1.0.RC1"
@@ -38,18 +38,18 @@ cp ${CACHE_DIR}/${JETTY_RUNNER_JAR} ${BUILD_DIR}/jetty/runner.jar
 echo " done"
 
 # Download Sonar if not in cache
-if [ ! -f ${CACHE_DIR}/${SONAR_DIST_ZIP} ]; then  
-  SONAR_URL="http://dist.sonar.codehaus.org/${SONAR_DIST_ZIP}"
+if [ ! -f ${CACHE_DIR}/${SONAR_DIST_TAR} ]; then  
+  SONAR_URL="https://s3.amazonaws.com/heroku-buildpack-sonar/${SONAR_DIST_TAR}"
   echo -n "-----> Downloading ${SONAR_DIST}....."
-  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST_ZIP}
+  curl --silent --location ${SONAR_URL} > ${CACHE_DIR}/${SONAR_DIST_TAR}
   echo " done"
 fi
 
 echo -n "-----> Installing ${SONAR_DIST}...."
 
-# Unzip Sonar
+# Untar Sonar
 cd ${BUILD_DIR}
-jar xf ${CACHE_DIR}/${SONAR_DIST_ZIP}
+tar -zxf ${CACHE_DIR}/${SONAR_DIST_TAR}
 mv ${SONAR_DIST} ${SONAR_HOME}
 
 # Copy vendored properties into Sonar
