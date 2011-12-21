@@ -14,7 +14,6 @@ testCompile()
 
   assertContains "-----> Installing sonar"  "`cat ${STD_OUT}`"
   assertTrue "Should have installed Sonar in build dir: `ls -la ${BUILD_DIR}`" "[ -d ${BUILD_DIR}/sonar ]"
-  assertTrue "Should have created Sonar home directory: `ls -la ${BUILD_DIR}/sonar`" "[ -d ${BUILD_DIR}/sonar/home ]"
   assertContains "sonarHome" "`cat ${BUILD_DIR}/sonar/war/build-war.sh`"
   assertTrue "Sonar WAR should have been created `ls -la ${BUILD_DIR}/sonar/war`" "[ -f ${BUILD_DIR}/sonar/war/sonar.war ]"
   assertTrue "boot.sh should be present and executable `ls -la ${BUILD_DIR}/sonar/war`" "[ -x ${BUILD_DIR}/sonar/war/boot.sh ]"
