@@ -5,7 +5,7 @@
 testCompile()
 {
   capture ${BUILDPACK_HOME}/bin/compile ${BUILD_DIR} ${CACHE_DIR}
-  assertEquals 0 ${rtrn}
+  assertEquals 0 ${RETURN}
   assertEquals "" "`cat ${STD_ERR}`"
 
   assertContains "-----> Downloading sonar"  "`cat ${STD_OUT}`"
@@ -36,6 +36,6 @@ testCompile()
   assertNotContains "-----> Downloading jetty-runner"  "`cat ${STD_OUT}`"
   assertContains "-----> Installing jetty-runner"  "`cat ${STD_OUT}`"
   
-  assertEquals 0 ${rtrn}
+  assertEquals 0 ${RETURN}
   assertEquals "" "`cat ${STD_ERR}`"
 }
