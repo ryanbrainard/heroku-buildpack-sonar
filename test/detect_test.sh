@@ -9,6 +9,6 @@ testDetect()
   capture ${BUILDPACK_HOME}/bin/detect ${BUILD_DIR}
   
   assertEquals 0 ${RETURN}
-  assertEquals "FAIL ON PURPOSE" "`cat ${STD_OUT}`"
+  assertEquals "Sonar" "`cat ${STD_OUT}`"
   assertNull "`cat ${STD_ERR}`"
 }
